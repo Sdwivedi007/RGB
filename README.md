@@ -28,9 +28,11 @@ docs               # Architecture, API, indices registry
 3. Run the web client with MapLibre + drawing tools.
 4. Validate full flow: upload ortho → draw AOI → compute indices → export results.
 
+## Demo Status
+This repository currently contains **blueprint documentation only** (no runnable app yet). Once the web/API/worker apps are implemented under `apps/`, you can run the demo locally by following the Quick Start steps above and wiring the services with Docker Compose or your preferred stack.【F:README.md†L25-L29】
+
 ---
 
 ## Next Steps
 - Use the detailed specs in `/docs/` to implement your MVP.
 - Expand to advanced reporting and automated alerts per client.
-
