@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RGB GIS Analytics Demo</title>
+    <link
+      href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <header>
+          <h1>RGB GIS Analytics</h1>
+          <p class="subtitle">Sports ground monitoring demo (click to logout)</p>
+        </header>
+
+        <nav class="nav">
+          <button class="nav-button" data-view="home">Home Map</button>
+          <button class="nav-button" data-view="analytics">Ground Analytics</button>
+          <button class="nav-button" data-view="compare">Compare</button>
+          <button class="nav-button" data-view="exports">Exports</button>
+          <button class="nav-button" data-view="three">3D Potree</button>
+        </nav>
+
+        <section class="panel" id="home-panel">
+          <h2>Client Grounds</h2>
+          <ul class="ground-list" id="ground-list"></ul>
+        </section>
+
+        <section class="panel hidden" id="analytics-panel">
+          <h2>AOI Analysis</h2>
+          <div class="actions">
+            <button id="draw-aoi">Draw AOI</button>
+            <button id="clear-aoi" class="secondary">Clear AOI</button>
+          </div>
+          <div class="metrics">
+            <div>
+              <span class="label">AOI Area</span>
+              <span id="aoi-area">-</span>
+            </div>
+            <div>
+              <span class="label">Perimeter</span>
+              <span id="aoi-perimeter">-</span>
+            </div>
+          </div>
+          <h3>Indices</h3>
+          <div class="indices" id="indices"></div>
+          <button id="run-analysis" class="primary">Run Analysis</button>
+          <div id="analysis-results" class="results"></div>
+        </section>
+
+        <section class="panel hidden" id="compare-panel">
+          <h2>Compare Layers</h2>
+          <label>
+            Layer A
+            <select id="layer-a"></select>
+          </label>
+          <label>
+            Layer B
+            <select id="layer-b"></select>
+          </label>
+          <label>
+            Opacity
+            <input type="range" id="opacity" min="0" max="1" step="0.05" value="0.6" />
+          </label>
+        </section>
+
+        <section class="panel hidden" id="exports-panel">
+          <h2>Export</h2>
+          <p>Download latest results:</p>
+          <div class="actions">
+            <button data-export="csv">CSV</button>
+            <button data-export="geojson">GeoJSON</button>
+            <button data-export="png">PNG</button>
+            <button data-export="pdf">PDF</button>
+          </div>
+          <p class="small">Exports are generated from the demo analysis summary.</p>
+        </section>
+
+        <section class="panel hidden" id="three-panel">
+          <h2>3D Potree</h2>
+          <p>Potree viewer placeholder. Connect to the pointcloud endpoint once available.</p>
+        </section>
+      </aside>
+
+      <main class="map-area">
+        <div id="map"></div>
+        <div class="status" id="status">Select a ground to begin analysis.</div>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
