@@ -1,24 +1,4 @@
-if (!localStorage.getItem("rgb_token")) {
-  window.location.href = "login.html";
-}
-
-const apiBase = "http://localhost:8000";
-let grounds = [];
-
-const indexOptions = [
-  "NDVI",
-  "NDRE",
-  "CLRE",
-  "GLI",
-  "GCC",
-  "SMI_PROXY",
-  "STRESS",
-  "DISEASE_PROXY",
-  "BSI_NIR_PROXY",
-  "FCOVER",
-];
-
-const fallbackGrounds = [
+const grounds = [
   {
     id: "ground-01",
     name: "National Sports Arena",
@@ -36,6 +16,19 @@ const fallbackGrounds = [
   },
 ];
 
+const indexOptions = [
+  "NDVI",
+  "NDRE",
+  "CLRE",
+  "GLI",
+  "GCC",
+  "SMI_PROXY",
+  "STRESS",
+  "DISEASE_PROXY",
+  "BSI_NIR_PROXY",
+  "FCOVER",
+];
+
 const layerOptions = [
   "Multispectral Ortho",
   "NDVI",
@@ -47,7 +40,7 @@ const layerOptions = [
 const map = new maplibregl.Map({
   container: "map",
   style: "https://demotiles.maplibre.org/style.json",
-  center: fallbackGrounds[0].center,
+  center: grounds[0].center,
   zoom: 4,
 });
 
@@ -63,7 +56,7 @@ const drawButton = document.getElementById("draw-aoi");
 const clearButton = document.getElementById("clear-aoi");
 const runAnalysis = document.getElementById("run-analysis");
 
-let currentGround = fallbackGrounds[0];
+let currentGround = grounds[0];
 let drawing = false;
 let drawCoords = [];
 let aoiGeojson = null;
@@ -84,24 +77,6 @@ function renderGrounds() {
     });
     groundList.appendChild(item);
   });
-}
-
-async function loadGrounds() {
-  try {
-    const response = await fetch(`${apiBase}/clients/client-01/grounds`);
-    if (!response.ok) {
-      throw new Error("Failed to load grounds");
-    }
-    const data = await response.json();
-    grounds = data.map((ground) => ({
-      ...ground,
-      center: [ground.lon, ground.lat],
-    }));
-  } catch (error) {
-    grounds = fallbackGrounds;
-  }
-  currentGround = grounds[0];
-  renderGrounds();
 }
 
 function renderIndices() {
@@ -255,7 +230,7 @@ map.getCanvas().addEventListener("dblclick", (event) => {
   status.textContent = "AOI captured. Run analysis to compute indices.";
 });
 
-loadGrounds();
+renderGrounds();
 renderIndices();
 setupCompare();
 
@@ -286,32 +261,8 @@ runAnalysis.addEventListener("click", () => {
   const selected = Array.from(
     indicesContainer.querySelectorAll("input:checked")
   ).map((input) => input.value);
-  fetch(`${apiBase}/grounds/${currentGround.id}/analyze`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      ground_id: currentGround.id,
-      indices: selected,
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Analysis failed");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      const results = Object.entries(data.results).map(
-        ([index, stats]) =>
-          `${index}: min ${stats.min}, mean ${stats.mean}, max ${stats.max}`
-      );
-      analysisResults.textContent = results.join("\n");
-      status.textContent = "Analysis complete. Export or compare layers.";
-    })
-    .catch(() => {
-      generateResults(selected);
-      status.textContent = "Demo analysis complete (offline mode).";
-    });
+  generateResults(selected);
+  status.textContent = "Analysis complete. Export or compare layers.";
 });
 
 const exportButtons = document.querySelectorAll("[data-export]");
@@ -343,11 +294,3 @@ exportButtons.forEach((button) => {
     URL.revokeObjectURL(url);
   });
 });
-
-const subtitle = document.querySelector(".subtitle");
-if (subtitle) {
-  subtitle.addEventListener("click", () => {
-    localStorage.removeItem("rgb_token");
-    window.location.href = "login.html";
-  });
-}
