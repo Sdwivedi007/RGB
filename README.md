@@ -29,7 +29,14 @@ docs               # Architecture, API, indices registry
 4. Validate full flow: upload ortho → draw AOI → compute indices → export results.
 
 ## Demo Status
-This repository currently contains **blueprint documentation only** (no runnable app yet). Once the web/API/worker apps are implemented under `apps/`, you can run the demo locally by following the Quick Start steps above and wiring the services with Docker Compose or your preferred stack.【F:README.md†L25-L29】
+This repository now includes a **front-end demo** under `apps/web` that showcases the home map, AOI drawing, basic analysis, compare controls, and export actions using mocked data. The backend services (API/worker/tile server) still need to be implemented separately for full production workflows.【F:README.md†L25-L29】
+
+### Run the Demo (Front-end Only)
+```bash
+cd apps/web
+python3 -m http.server 8080
+```
+Then open http://localhost:8080 in your browser.【F:README.md†L25-L35】
 
 ---
 
