@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RGB System Access</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <div class="login">
+      <div class="grid-overlay"></div>
+      <div class="sphere"></div>
+      <div class="card">
+        <div class="logo">RGB</div>
+        <h1>System Access</h1>
+        <p>Secure login for multispectral analytics</p>
+        <form id="login-form">
+          <label>
+            Operator ID
+            <input type="text" name="operator" placeholder="Operator ID" required />
+          </label>
+          <label>
+            Access Key
+            <input
+              type="password"
+              name="access"
+              placeholder="Access Key"
+              required
+            />
+          </label>
+          <button type="submit">Initiate Connection</button>
+          <p class="hint">Demo credentials: demo / demo</p>
+        </form>
+      </div>
+    </div>
+    <script src="login.js"></script>
+  </body>
+</html>
